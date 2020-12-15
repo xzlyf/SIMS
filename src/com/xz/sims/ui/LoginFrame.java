@@ -153,6 +153,8 @@ public class LoginFrame extends JFrame {
                                 , "警告", JOptionPane.WARNING_MESSAGE);
                     } else {
                         System.out.println("学工号：" + teacher.getUserNo() + "   登录成功");
+                        new TeacherManagerFrame().init(teacher);
+                        dispose();
                     }
                 }
 

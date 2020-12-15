@@ -1,8 +1,6 @@
 package com.xz.sims.data;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
 import com.xz.sims.content.Local;
 import com.xz.sims.entity.Teacher;
 
