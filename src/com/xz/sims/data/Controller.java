@@ -81,12 +81,42 @@ public class Controller {
 
     /**
      * 注册 实现
+     * 原理同上
      *
      * @param teacher 教师信息实体
-     * @return
+     * @return 0 注册成功
+     * 1 账号存在
+     * 2 文件写入失败
      */
-    public static Teacher tRegister(Teacher teacher) {
-        System.out.println(JSON.toJSONString(teacher));
-        return null;
+    public static int tRegister(Teacher teacher) {
+
+        File file = new File(Local.USER_DIR + File.separator + teacher.getUserNo());
+        if (file.exists()) {
+            //人员存在
+            return 1;
+        }
+
+        String userData = JSON.toJSONString(teacher);
+
+        FileWriter writer = null;
+
+        try {
+            writer = new FileWriter(file);
+            writer.write(userData);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 2;
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return 0;
     }
 }
