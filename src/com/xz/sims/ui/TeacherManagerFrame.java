@@ -19,8 +19,10 @@ public class TeacherManagerFrame extends JFrame {
     private Container mainContainer = getContentPane();
     //多行文本域
     private JTextArea userInfoArea;
+    private JTextArea stuInfoArea;
     //定义滚动窗格
     private JScrollPane jspane;
+    private JScrollPane jspane2;
 
     /**
      * 初始化 并传入登录人员信息
@@ -39,6 +41,7 @@ public class TeacherManagerFrame extends JFrame {
         setResizable(false);
 
         mainPanel();
+        showInfo();
 
         //自动退出销毁
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,15 +49,40 @@ public class TeacherManagerFrame extends JFrame {
     }
 
     private void mainPanel() {
+        //展示区
         mainContainer.setLayout(null);
         userInfoArea = new JTextArea();
+        stuInfoArea = new JTextArea();
         //文本域不可编辑
         userInfoArea.setEditable(false);
-        jspane = new JScrollPane(userInfoArea);    //创建滚动窗格
-        jspane.setBounds(10, 10, 150, 290);
+        stuInfoArea.setEditable(false);
+        //创建滚动窗格
+        jspane = new JScrollPane(userInfoArea);
+        jspane2 = new JScrollPane(stuInfoArea);
+        jspane.setBounds(10, 10, 150, 90);
+        jspane2.setBounds(10, 130, 150, 170);
         mainContainer.add(jspane);
+        mainContainer.add(jspane2);
+        JLabel label = new JLabel("---班级学生---");
+        label.setBounds(10,100,150,30);
+        mainContainer.add(label);
 
-        showInfo();
+
+        //功能区
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new FlowLayout());
+        jPanel.add(new JButton("测试1"));
+        jPanel.add(new JButton("测试2"));
+        jPanel.add(new JButton("测试3"));
+        jPanel.add(new JButton("测试4"));
+        jPanel.add(new JButton("测试5"));
+        jPanel.add(new JButton("测试6"));
+        jPanel.add(new JButton("测试7"));
+        jPanel.add(new JButton("测试8"));
+        jPanel.setBounds(160, 10, 400, 290);
+        jPanel.setBackground(Color.pink);
+        mainContainer.add(jPanel);
+
 
     }
 
@@ -76,7 +104,6 @@ public class TeacherManagerFrame extends JFrame {
         sb.append("管理班级：")
                 .append(teacher.getClassName())
                 .append("\n");
-        sb.append("----------------------");
 
         userInfoArea.setText(sb.toString());
     }
