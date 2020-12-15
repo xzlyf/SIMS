@@ -5,11 +5,17 @@ package com.xz.sims.entity;
  * @Date: 2020/12/15
  */
 public class Teacher {
+    //账号
     private String userNo;
+    //密码
     private String userPwd;
+    //姓名
     private String name;
+    //年龄
     private int age;
+    //电话
     private String phone;
+    //管理班级
     private String className;
 
     public String getUserNo() {

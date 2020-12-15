@@ -1,9 +1,13 @@
 package com.xz.sims.data;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.xz.sims.content.Local;
 import com.xz.sims.entity.Teacher;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @Author: xz
@@ -12,7 +16,7 @@ import java.io.*;
 public class Controller {
 
     /**
-     * 登录实现
+     * 登录 实现
      *
      * @param userNo 账号
      * @param pwd    密码
@@ -25,22 +29,64 @@ public class Controller {
             //人员不存在
             return null;
         }
-
-        //读取文件
+        StringBuffer sb;
+        Reader reader = null;
         try {
-            Reader reader = new InputStreamReader(new FileInputStream(file), "utf-8");
+
+            //尝试读取人员数据
+            //如果提供的账号不存在表示人员也不存在的
+            //存在的话就开始判断密码是否正确
+            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
             int ch = 0;
-            StringBuffer sb = new StringBuffer();
+            sb = new StringBuffer();
             while ((ch = reader.read()) != -1) {
                 sb.append((char) ch);
             }
-            reader.close();
-            System.out.println(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
+        //--开始判断密码是否正确--
+
+        //1.把json数据转成实体类
+        Teacher tt = null;
+        try {
+            tt = JSON.parseObject(sb.toString(), Teacher.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //json文件已损坏
+            System.out.println("======用户数据损坏=====");
+            return null;
+        }
+
+        //2.判断用户输入的密码是否正确
+        if (tt.getUserPwd().equals(pwd)) {
+            //密码正确
+            return tt;
+        } else {
+            //密码错误
+            return null;
+        }
+    }
+
+
+    /**
+     * 注册 实现
+     *
+     * @param teacher 教师信息实体
+     * @return
+     */
+    public static Teacher tRegister(Teacher teacher) {
+        System.out.println(JSON.toJSONString(teacher));
         return null;
     }
 }

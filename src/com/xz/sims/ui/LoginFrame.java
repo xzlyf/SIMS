@@ -1,6 +1,8 @@
 package com.xz.sims.ui;
 
 import com.xz.sims.data.Controller;
+import com.xz.sims.entity.Teacher;
+import com.xz.sims.utils.AccountGenerate;
 import com.xz.sims.utils.ScreenUtil;
 
 import javax.swing.*;
@@ -122,19 +124,35 @@ public class LoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userNo = username.getText().trim();
-                String pwd = new String(password.getPassword()).trim();
-                if (userNo.equals("") || pwd.equals("")) {
-                    JOptionPane.showMessageDialog(null, "学工号和密码都不可为空", "错误", JOptionPane.ERROR_MESSAGE);
+                String userPwd = new String(password.getPassword()).trim();
+                if (userNo.equals("") || userPwd.equals("")) {
+                    JOptionPane.showMessageDialog(null, "学工号和密码都不可为空"
+                            , "错误", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 System.out.println("输入：" + userNo);
-                System.out.println("输入：" + pwd);
+                System.out.println("输入：" + userPwd);
 
                 if (type == 0) {
-                    //学生登录
+                    System.out.println("----学生登录-----");
+                    Teacher teacher = new Teacher();
+                    teacher.setAge(18);
+                    teacher.setClassName("一年级一班");
+                    teacher.setName("李明");
+                    teacher.setPhone("17666666666");
+                    teacher.setUserNo(AccountGenerate.makeAccount(8));//随机生成账号8位
+                    teacher.setUserPwd("123456");//随机生成账号8位
+                    Controller.tRegister(teacher);
+
                 } else if (type == 1) {
-                    //教师登录
-                    //Controller.tlogin("123", "123");
+                    System.out.println("----教师登录-----");
+                    Teacher teacher = Controller.tlogin(userNo, userPwd);
+                    if (teacher==null){
+                        JOptionPane.showMessageDialog(null, "人员不存在或密码错误"
+                                , "警告", JOptionPane.WARNING_MESSAGE);
+                    }else{
+                        System.out.println("学工号："+teacher.getUserNo()+"   登录成功");
+                    }
                 }
 
             }
