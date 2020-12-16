@@ -7,6 +7,8 @@ import com.xz.sims.utils.ScreenUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * @Author: xz
@@ -37,9 +39,8 @@ public class AddStuFrame extends JFrame {
 
         //置顶
         setAlwaysOnTop(true);
-        //自动退出销毁
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+
     }
 
     /**
@@ -92,6 +93,12 @@ public class AddStuFrame extends JFrame {
                     }
                 }
 
+            }
+        });
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                AddStuFrame.this.dispose();
             }
         });
     }
