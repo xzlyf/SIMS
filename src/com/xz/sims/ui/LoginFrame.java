@@ -8,10 +8,7 @@ import com.xz.sims.utils.ScreenUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 
 /**
  * @Author: xz
@@ -29,6 +26,7 @@ public class LoginFrame extends JFrame {
     private JRadioButton rb1;
     private JRadioButton rb2;
     private JButton submit;
+    private JLabel l1;
     private ActionListener roleSelectListener;
     //当前选定角色 0 学生  1 教师
     private int type = 0;
@@ -90,6 +88,10 @@ public class LoginFrame extends JFrame {
         rb2.setBounds(160, 100, 50, 20);
         fieldPanel.add(rb1);
         fieldPanel.add(rb2);
+        l1 = new JLabel("注册账号");
+        l1.setForeground(Color.BLUE);
+        l1.setBounds(220, 100, 50, 20);
+        fieldPanel.add(l1);
 
         //按钮部分--South
         JPanel buttonPanel = new JPanel();
@@ -161,6 +163,13 @@ public class LoginFrame extends JFrame {
             }
         });
 
+        l1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                new RegisterFrame().init();
+            }
+        });
 
     }
 
