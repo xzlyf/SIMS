@@ -104,6 +104,69 @@ public class Controller {
     }
 
     /**
+     * 学生登录 实现
+     *
+     * @param userNo 账号
+     * @param pwd    密码
+     * @return 人员信息实体
+     */
+    public static Student slogin(String userNo, String pwd) {
+        //根据账号查询本地是否存在这个文件，也就是是否存在这个人员
+        File file = new File(Local.STU_DIR + File.separator + userNo);
+        if (!file.exists()) {
+            //人员不存在
+            return null;
+        }
+        String data = readData(file);
+        if (data == null) {
+            return null;
+        }
+        //--开始判断密码是否正确--
+
+        //1.把json数据转成实体类
+        Student tt = null;
+        try {
+            tt = gson.fromJson(data, Student.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //json文件已损坏
+            System.out.println("======用户数据损坏=====");
+            return null;
+        }
+        //2.判断用户输入的密码是否正确
+        if (tt.getUserPwd().equals(pwd)) {
+            //密码正确
+            return tt;
+        } else {
+            //密码错误
+            return null;
+        }
+    }
+
+    /**
+     * 学生注册
+     * 同上
+     *
+     * @param student 学生信息实体
+     * @return 0 注册成功
+     * 1 账号存在
+     * 2 文件写入失败
+     */
+    public static int sRegister(Student student) {
+        File file = new File(Local.STU_DIR + File.separator + student.getUserNo());
+        if (file.exists()) {
+            //人员存在
+            return 1;
+        }
+        String userData = gson.toJson(student);
+        boolean isOk = writerData(file, userData);
+        if (!isOk) {
+            return 2;
+        }
+        return 0;
+    }
+
+    /**
      * 获取接管班级学生名单
      *
      * @param userNo 教工号
@@ -145,7 +208,6 @@ public class Controller {
      */
     public static int addStuToClasses(String userNo, Student student) {
         Classes c = new Classes();
-        List<Student> oldList = c.getStudentList();
 
         File file = new File(Local.CLASS_STU + File.separator + userNo);
         if (!file.exists()) {
@@ -154,6 +216,8 @@ public class Controller {
             //没有找到班级文件就创建一个空的班级
             writerData(file, tempData);
         }
+        c = gson.fromJson(readData(file), Classes.class);
+        List<Student> oldList = c.getStudentList();
         if (oldList == null) {
             oldList = new ArrayList<>();
         }

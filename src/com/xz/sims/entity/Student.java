@@ -7,6 +7,8 @@ package com.xz.sims.entity;
 public class Student {
     //学号
     private String userNo;
+    //登录密码
+    private String userPwd;
     //姓名
     private String name;
     //年龄
@@ -17,6 +19,15 @@ public class Student {
     private String teacherName;
     //班主任工号
     private String teacherNo;
+
+
+    public String getUserPwd() {
+        return userPwd;
+    }
+
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
+    }
 
     public String getUserNo() {
         return userNo;

@@ -136,6 +136,7 @@ public class LoginFrame extends JFrame {
 
                 if (type == 0) {
                     //System.out.println("----学生登录-----");
+                    //教师注册
                     //Teacher teacher = new Teacher();
                     //teacher.setAge(18);
                     //teacher.setClassName("一年级一班");
@@ -146,6 +147,19 @@ public class LoginFrame extends JFrame {
                     //int i = Controller.tRegister(teacher);
                     //System.out.println(i);
 
+                    //学生注册
+                    //Student student = new Student();
+                    //student.setUserNo(AccountGenerate.makeAccount(8));
+                    //student.setUserPwd("123");
+                    //student.setTeacherNo("123");
+                    //student.setTeacherName("李明");
+                    //student.setPhone("10086");
+                    //student.setName("咳咳");
+                    //student.setAge("12");
+                    //Controller.sRegister(student);
+
+
+                    //添加至班级名单
                     //Student student = new Student();
                     //student.setAge("12");
                     //student.setName("小苗");

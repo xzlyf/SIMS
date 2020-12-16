@@ -23,7 +23,7 @@ public class AddStuFrame extends JFrame {
 
     public AddStuFrame(String userNo) {
         this.userNo = userNo;
-        setTitle("SIMS校园管理系统");
+        setTitle("添加学生");
         //居中显示窗体
         setBounds((ScreenUtil.getScreenWidth() - windowsWedth) / 2
                 , (ScreenUtil.getScreenHeight() - windowsHeight) / 2
