@@ -62,7 +62,15 @@ public class TeacherManagerFrame extends JFrame {
         addListener();
         showInfo();
         showClasses();
-        showTabel(Controller.getRandomModel());
+        DefaultTableModel model = Controller.getTable(teacher.getUserNo());
+        if (model == null) {
+            //如果这个老师没有创建过课表就生成一个随机课表
+            showTabel(Controller.getRandomModel());
+        } else {
+            //如果课表存在就显示本地保存的课表数据
+            showTabel(model);
+
+        }
         //自动退出销毁
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -154,6 +162,7 @@ public class TeacherManagerFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Controller.saveTimetable(teacher.getUserNo(), (DefaultTableModel) table.getModel());
+                JOptionPane.showMessageDialog(mainContainer,"已保存当前课表");
             }
         });
     }
@@ -209,5 +218,6 @@ public class TeacherManagerFrame extends JFrame {
     private void showTabel(DefaultTableModel model) {
         table.setModel(model);
     }
+
 
 }

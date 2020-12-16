@@ -10,6 +10,7 @@ import com.xz.sims.entity.Timetable;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -360,6 +361,45 @@ public class Controller {
         }
 
         return 0;
+    }
+
+    /**
+     * 查询课表
+     *
+     * @param userNo 教工号
+     * @return
+     */
+    public static DefaultTableModel getTable(String userNo) {
+        File file = new File(Local.TIMETABLE + File.separator + userNo);
+        if (!file.exists()) {
+            //无课表
+            return null;
+        }
+        String data = readData(file);
+        if (data == null) {
+            //空数据
+            return null;
+        }
+        //-----开始转换为defaultTableModel对象-------
+        Timetable timestamp = gson.fromJson(data, Timetable.class);
+        String[] title = timestamp.getTitle();
+        String[][] value = timestamp.getValue();
+        Vector<Object> vTitle = new Vector<>();
+        Vector vData = new Vector();
+
+        for (int i = 0; i < title.length; i++) {
+            vTitle.add(title[i]);
+        }
+
+        for (int i = 0; i < value.length; i++) {
+            Vector vRow = new Vector<>();
+            for (int j = 0; j < value[i].length; j++) {
+                String t = value[i][j];
+                vRow.add(t);
+            }
+            vData.add(vRow);
+        }
+        return new DefaultTableModel(vData, vTitle);
     }
 
     /**
