@@ -1,5 +1,6 @@
 package com.xz.sims.ui;
 
+import com.xz.sims.data.Controller;
 import com.xz.sims.entity.Classes;
 import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
@@ -37,6 +38,9 @@ public class TeacherManagerFrame extends JFrame {
     public void init(Teacher teacher) {
         setTitle("SIMS校园管理系统");
         this.teacher = teacher;
+        if (teacher.getUserNo() != null) {
+            this.classes = Controller.getClasses(teacher.getUserNo());
+        }
         //居中显示窗体
         setBounds((ScreenUtil.getScreenWidth() - windowsWedth) / 2
                 , (ScreenUtil.getScreenHeight() - windowsHeight) / 2

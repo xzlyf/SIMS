@@ -1,5 +1,6 @@
 package com.xz.sims;
 
+import com.xz.sims.data.Controller;
 import com.xz.sims.ui.LoginFrame;
 
 /**
@@ -11,6 +12,7 @@ import com.xz.sims.ui.LoginFrame;
  */
 public class Main {
     public static void main(String[] args) {
+        Controller.init();
         new LoginFrame().init();
     }
 }

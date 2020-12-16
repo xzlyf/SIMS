@@ -1,6 +1,7 @@
 package com.xz.sims.ui;
 
 import com.xz.sims.data.Controller;
+import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
 import com.xz.sims.utils.AccountGenerate;
 import com.xz.sims.utils.ScreenUtil;
@@ -144,6 +145,15 @@ public class LoginFrame extends JFrame {
                     //teacher.setUserPwd("123456");//随机生成账号8位
                     //int i = Controller.tRegister(teacher);
                     //System.out.println(i);
+
+                    //Student student = new Student();
+                    //student.setAge("12");
+                    //student.setName("小苗");
+                    //student.setPhone("12345678");
+                    //student.setTeacherName("李明");
+                    //student.setTeacherNo("123");
+                    //student.setUserNo("54123874");
+                    //Controller.addStuToClasses("123", student);
 
                 } else if (type == 1) {
                     System.out.println("----教师登录-----");

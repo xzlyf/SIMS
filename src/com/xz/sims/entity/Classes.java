@@ -7,16 +7,17 @@ import java.util.List;
  * @Date: 2020/12/16
  */
 public class Classes {
-    private String className;
-
+    //班主任工号
+    private String userNo;
+    //学生列表
     private List<Student> studentList;
 
-    public String getClassName() {
-        return className;
+    public String getUserNo() {
+        return userNo;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
     }
 
     public List<Student> getStudentList() {

@@ -1,18 +1,39 @@
 package com.xz.sims.data;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.xz.sims.content.Local;
 import com.xz.sims.entity.Classes;
+import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: xz
  * @Date: 2020/12/15
  */
 public class Controller {
+    private static Gson gson;
+
+    /**
+     * 数据存储位置初始化
+     * 调用顺序为最高
+     * 防止查询文件或创建文件时路径无效
+     */
+    public static void init() {
+        gson = new Gson();
+        File file = new File(Local.CLASS_STU);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        file = new File(Local.USER_DIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
 
     /**
      * 登录 实现
@@ -59,7 +80,7 @@ public class Controller {
         //1.把json数据转成实体类
         Teacher tt = null;
         try {
-            tt = JSON.parseObject(sb.toString(), Teacher.class);
+            tt = gson.fromJson(sb.toString(), Teacher.class);
         } catch (Exception e) {
             e.printStackTrace();
             //json文件已损坏
@@ -95,27 +116,13 @@ public class Controller {
             return 1;
         }
 
-        String userData = JSON.toJSONString(teacher);
+        String userData = gson.toJson(teacher);
 
-        FileWriter writer = null;
 
-        try {
-            writer = new FileWriter(file);
-            writer.write(userData);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        boolean isOk = writerData(file, userData);
+        if (!isOk) {
             return 2;
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
         return 0;
     }
 
@@ -127,7 +134,7 @@ public class Controller {
      */
     public static Classes getClasses(String userNo) {
         File file = new File(Local.CLASS_STU + File.separator + userNo);
-        if (!file.exists()){
+        if (!file.exists()) {
             //不存在班级名单
             return null;
         }
@@ -158,7 +165,7 @@ public class Controller {
 
         Classes cc = null;
         try {
-            cc = JSON.parseObject(sb.toString(), Classes.class);
+            cc = gson.fromJson(sb.toString(), Classes.class);
         } catch (Exception e) {
             e.printStackTrace();
             //json文件已损坏
@@ -169,4 +176,67 @@ public class Controller {
         return cc;
 
     }
+
+
+    /**
+     * 添加学生进班级列表
+     *
+     * @param userNo  教工号
+     * @param student 学生信息
+     * @return -1 文件创建失败
+     */
+    public static int addStuToClasses(String userNo, Student student) {
+        Classes c = new Classes();
+        List<Student> oldList = c.getStudentList();
+
+        File file = new File(Local.CLASS_STU + File.separator + userNo);
+        if (!file.exists()) {
+            c.setUserNo(userNo);
+            String tempData = gson.toJson(c);
+            //没有找到班级文件就创建一个空的班级
+            writerData(file, tempData);
+        }
+        if (oldList == null) {
+            oldList = new ArrayList<>();
+        }
+
+        oldList.add(student);
+        c.setStudentList(oldList);
+        //写入数据
+        String data = gson.toJson(c);
+        writerData(file, data);
+        return 0;
+    }
+
+
+    /**
+     * 写数据工具
+     * 替换式修改，不追加
+     *
+     * @param file
+     * @param data
+     * @return
+     */
+    private static boolean writerData(File file, String data) {
+        FileWriter writer = null;
+
+        try {
+            writer = new FileWriter(file);
+            writer.write(data);
+            writer.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
 }
