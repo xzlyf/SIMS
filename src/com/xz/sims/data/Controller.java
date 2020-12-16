@@ -5,6 +5,7 @@ import com.xz.sims.content.Local;
 import com.xz.sims.entity.Classes;
 import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
+import com.xz.sims.entity.Timetable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -258,6 +259,28 @@ public class Controller {
         }
         return cc;
 
+    }
+
+    /**
+     * 保存课表
+     *
+     * @param userNo    教工号
+     * @param timetable 课表数据
+     * @return 0成功
+     * -1 失败
+     */
+    public static int saveTimetable(String userNo, Timetable timetable) {
+        File file = new File(Local.TIMETABLE + File.separator + userNo);
+        if (!file.exists()) {
+            return -1;
+        }
+
+        boolean isOk = writerData(file, gson.toJson(timetable));
+        if (!isOk) {
+            return -1;
+        }
+
+        return 0;
     }
 
 

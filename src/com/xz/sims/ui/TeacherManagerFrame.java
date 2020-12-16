@@ -7,10 +7,11 @@ import com.xz.sims.entity.Teacher;
 import com.xz.sims.utils.ScreenUtil;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * @Author: xz
@@ -31,9 +32,13 @@ public class TeacherManagerFrame extends JFrame {
     //定义滚动窗格
     private JScrollPane jspane;
     private JScrollPane jspane2;
+    //课表
+    private JTable table;
 
     //按钮
     private JButton b1 = new JButton("添加学生");
+    private JButton b2 = new JButton("生成随机课表（测试）");
+    private JButton b3 = new JButton("保存课表");
 
     /**
      * 初始化 并传入登录人员信息
@@ -58,7 +63,7 @@ public class TeacherManagerFrame extends JFrame {
         addListener();
         showInfo();
         showClasses();
-
+        showTabel();
         //自动退出销毁
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -89,8 +94,8 @@ public class TeacherManagerFrame extends JFrame {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new FlowLayout());
         jPanel.add(b1);
-        jPanel.add(new JButton("测试2"));
-        jPanel.add(new JButton("测试3"));
+        jPanel.add(b2);
+        jPanel.add(b3);
         jPanel.add(new JButton("测试4"));
         jPanel.add(new JButton("测试5"));
         jPanel.add(new JButton("测试6"));
@@ -99,6 +104,15 @@ public class TeacherManagerFrame extends JFrame {
         jPanel.setBounds(160, 10, 400, 90);
         jPanel.setBackground(Color.pink);
         mainContainer.add(jPanel);
+
+        //课表
+        JLabel label2 = new JLabel("---班级课表---");
+        label2.setBounds(170, 100, 150, 30);
+        mainContainer.add(label2);
+        table = new JTable(6, 5);
+        JScrollPane pane = new JScrollPane(table);
+        pane.setBounds(160, 130, 400, 170);
+        mainContainer.add(pane);
 
 
     }
@@ -126,6 +140,20 @@ public class TeacherManagerFrame extends JFrame {
                     }
 
                 });
+            }
+        });
+
+        //生成一个随机课表
+        b2.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        //保存课表
+        b3.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
@@ -172,6 +200,39 @@ public class TeacherManagerFrame extends JFrame {
         }
 
         stuInfoArea.setText(sb.toString());
+    }
+
+
+    /**
+     * 显示课表
+     */
+    private void showTabel() {
+        Vector<Object> vName = new Vector<>();
+        vName.add("星期一");
+        vName.add("星期二");
+        vName.add("星期三");
+        vName.add("星期四");
+        vName.add("星期五");
+
+        Vector vData = new Vector<>();
+        Vector vRow = new Vector<>();
+        vRow.add("语文");
+        vRow.add("数学");
+        vRow.add("英语");
+        vRow.add("英语");
+        vRow.add("美术");
+        vRow.add("体育");
+        vData.add(vRow.clone());
+        vRow.clear();
+        vRow.add("1");
+        vRow.add("2");
+        vRow.add("3");
+        vRow.add("4");
+        vRow.add("5");
+        vRow.add("6");
+        vData.add(vRow.clone());
+        DefaultTableModel model = new DefaultTableModel(vData, vName);
+        table.setModel(model);
     }
 
 }

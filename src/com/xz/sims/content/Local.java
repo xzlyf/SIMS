@@ -11,4 +11,6 @@ public class Local {
     public static final String STU_DIR = "data/stu";
     //班级名单存储位置
     public static final String CLASS_STU = "data/class";
+    //课表存储位置
+    public static final String TIMETABLE = "data/timetable";
 }
