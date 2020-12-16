@@ -1,10 +1,13 @@
 package com.xz.sims.ui;
 
+import com.xz.sims.entity.Classes;
+import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
 import com.xz.sims.utils.ScreenUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @Author: xz
@@ -13,6 +16,8 @@ import java.awt.*;
 public class TeacherManagerFrame extends JFrame {
     //教工信息
     private Teacher teacher;
+    //接管班级名单
+    private Classes classes;
 
     private int windowsWedth = 600;
     private int windowsHeight = 400;
@@ -42,11 +47,13 @@ public class TeacherManagerFrame extends JFrame {
 
         mainPanel();
         showInfo();
+        showClasses();
 
         //自动退出销毁
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
+
 
     private void mainPanel() {
         //展示区
@@ -64,7 +71,7 @@ public class TeacherManagerFrame extends JFrame {
         mainContainer.add(jspane);
         mainContainer.add(jspane2);
         JLabel label = new JLabel("---班级学生---");
-        label.setBounds(10,100,150,30);
+        label.setBounds(10, 100, 150, 30);
         mainContainer.add(label);
 
 
@@ -90,6 +97,8 @@ public class TeacherManagerFrame extends JFrame {
      * 展示登录人员信息
      */
     private void showInfo() {
+        if (teacher == null)
+            return;
         StringBuilder sb = new StringBuilder();
         sb.append("教工：")
                 .append(teacher.getName())
@@ -107,4 +116,24 @@ public class TeacherManagerFrame extends JFrame {
 
         userInfoArea.setText(sb.toString());
     }
+
+    /**
+     * 展示班级名单
+     */
+    private void showClasses() {
+        if (classes == null)
+            return;
+        StringBuilder sb = new StringBuilder();
+        List<Student> stuList = classes.getStudentList();
+        //遍历拼接数据展示
+        for (Student st : stuList) {
+            sb.append(st.getName());
+            sb.append("\t");
+            sb.append(st.getUserNo());
+            sb.append("\n");
+        }
+
+        stuInfoArea.setText(sb.toString());
+    }
+
 }

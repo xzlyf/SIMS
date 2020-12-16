@@ -2,6 +2,7 @@ package com.xz.sims.data;
 
 import com.alibaba.fastjson.JSON;
 import com.xz.sims.content.Local;
+import com.xz.sims.entity.Classes;
 import com.xz.sims.entity.Teacher;
 
 import java.io.*;
@@ -116,5 +117,56 @@ public class Controller {
         }
 
         return 0;
+    }
+
+    /**
+     * 获取接管班级学生名单
+     *
+     * @param userNo 教工号
+     * @return 名单数据
+     */
+    public static Classes getClasses(String userNo) {
+        File file = new File(Local.CLASS_STU + File.separator + userNo);
+        if (!file.exists()){
+            //不存在班级名单
+            return null;
+        }
+
+        StringBuffer sb;
+        Reader reader = null;
+        try {
+
+            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+            int ch = 0;
+            sb = new StringBuffer();
+            while ((ch = reader.read()) != -1) {
+                sb.append((char) ch);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        Classes cc = null;
+        try {
+            cc = JSON.parseObject(sb.toString(), Classes.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //json文件已损坏
+            System.out.println("======班级名单数据损坏=====");
+            return null;
+        }
+
+        return cc;
+
     }
 }
