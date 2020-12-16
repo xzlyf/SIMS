@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * @Author: xz
@@ -63,7 +62,7 @@ public class TeacherManagerFrame extends JFrame {
         addListener();
         showInfo();
         showClasses();
-        showTabel();
+        showTabel(Controller.getRandomModel());
         //自动退出销毁
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -147,13 +146,14 @@ public class TeacherManagerFrame extends JFrame {
         b2.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                showTabel(Controller.getRandomModel());
             }
         });
         //保存课表
         b3.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Controller.saveTimetable(teacher.getUserNo(), (DefaultTableModel) table.getModel());
             }
         });
     }
@@ -206,32 +206,7 @@ public class TeacherManagerFrame extends JFrame {
     /**
      * 显示课表
      */
-    private void showTabel() {
-        Vector<Object> vName = new Vector<>();
-        vName.add("星期一");
-        vName.add("星期二");
-        vName.add("星期三");
-        vName.add("星期四");
-        vName.add("星期五");
-
-        Vector vData = new Vector<>();
-        Vector vRow = new Vector<>();
-        vRow.add("语文");
-        vRow.add("数学");
-        vRow.add("英语");
-        vRow.add("英语");
-        vRow.add("美术");
-        vRow.add("体育");
-        vData.add(vRow.clone());
-        vRow.clear();
-        vRow.add("1");
-        vRow.add("2");
-        vRow.add("3");
-        vRow.add("4");
-        vRow.add("5");
-        vRow.add("6");
-        vData.add(vRow.clone());
-        DefaultTableModel model = new DefaultTableModel(vData, vName);
+    private void showTabel(DefaultTableModel model) {
         table.setModel(model);
     }
 

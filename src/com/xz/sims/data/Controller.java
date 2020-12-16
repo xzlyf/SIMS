@@ -7,10 +7,10 @@ import com.xz.sims.entity.Student;
 import com.xz.sims.entity.Teacher;
 import com.xz.sims.entity.Timetable;
 
+import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: xz
@@ -18,6 +18,11 @@ import java.util.List;
  */
 public class Controller {
     private static Gson gson;
+    //最大节数
+    private static final int MAX_COLUM = 6;
+    //最大天数
+    public static final int MAX_DAY = 5;
+    private static String[] temp = {"语文", "英语", "数学", "体育", "美术"};
 
     /**
      * 数据存储位置初始化
@@ -35,6 +40,10 @@ public class Controller {
             file.mkdirs();
         }
         file = new File(Local.STU_DIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        file = new File(Local.TIMETABLE);
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -262,6 +271,70 @@ public class Controller {
     }
 
     /**
+     * 生成一个随机课表
+     *
+     * @return
+     */
+    public static DefaultTableModel getRandomModel() {
+        Vector<Object> vName = new Vector<>();
+        vName.add("星期一");
+        vName.add("星期二");
+        vName.add("星期三");
+        vName.add("星期四");
+        vName.add("星期五");
+
+        Random random = new Random();
+        Vector vData = new Vector();
+        Vector vRow = new Vector<>();
+
+        for (int i = 0; i < MAX_DAY; i++) {
+            for (int j = 0; j < MAX_COLUM; j++) {
+                vRow.add(temp[random.nextInt(5)]);
+            }
+            vData.add(vRow.clone());
+            vRow.clear();
+        }
+        return new DefaultTableModel(vData, vName);
+
+    }
+
+    /**
+     * table数据转为实体
+     * 并且保存课表
+     *
+     * @param userNo 教工号
+     * @param model  table数据
+     * @return
+     */
+    public static Timetable saveTimetable(String userNo, DefaultTableModel model) {
+        //列数
+        int col = model.getColumnCount();
+        //行数
+        int row = model.getRowCount();
+        String[][] timetable = new String[row][col];
+        Vector<Vector> dataVector = model.getDataVector();
+        Vector v;
+        for (int i = 0; i < row; i++) {
+            v = dataVector.get(i);
+            for (int j = 0; j < v.size(); j++) {
+                timetable[i][j] = (String) v.get(j);
+            }
+
+        }
+
+        String[] title = new String[col];
+        for (int i = 0; i < col; i++) {
+            title[i] = model.getColumnName(i);
+        }
+
+        Timetable tEntity = new Timetable();
+        tEntity.setValue(timetable);
+        tEntity.setTitle(title);
+        saveTable(userNo, tEntity);
+        return tEntity;
+    }
+
+    /**
      * 保存课表
      *
      * @param userNo    教工号
@@ -269,10 +342,16 @@ public class Controller {
      * @return 0成功
      * -1 失败
      */
-    public static int saveTimetable(String userNo, Timetable timetable) {
+    public static int saveTable(String userNo, Timetable timetable) {
         File file = new File(Local.TIMETABLE + File.separator + userNo);
         if (!file.exists()) {
-            return -1;
+            //不存在
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -1;
+            }
         }
 
         boolean isOk = writerData(file, gson.toJson(timetable));
@@ -282,7 +361,6 @@ public class Controller {
 
         return 0;
     }
-
 
     /**
      * 写数据工具
