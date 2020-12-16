@@ -8,6 +8,8 @@ import com.xz.sims.utils.ScreenUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class TeacherManagerFrame extends JFrame {
     private JScrollPane jspane;
     private JScrollPane jspane2;
 
+    //按钮
+    private JButton b1 = new JButton("添加学生");
+
     /**
      * 初始化 并传入登录人员信息
      *
@@ -50,6 +55,7 @@ public class TeacherManagerFrame extends JFrame {
         setResizable(false);
 
         mainPanel();
+        addListener();
         showInfo();
         showClasses();
 
@@ -82,7 +88,7 @@ public class TeacherManagerFrame extends JFrame {
         //功能区
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new FlowLayout());
-        jPanel.add(new JButton("测试1"));
+        jPanel.add(b1);
         jPanel.add(new JButton("测试2"));
         jPanel.add(new JButton("测试3"));
         jPanel.add(new JButton("测试4"));
@@ -90,12 +96,40 @@ public class TeacherManagerFrame extends JFrame {
         jPanel.add(new JButton("测试6"));
         jPanel.add(new JButton("测试7"));
         jPanel.add(new JButton("测试8"));
-        jPanel.setBounds(160, 10, 400, 290);
+        jPanel.setBounds(160, 10, 400, 90);
         jPanel.setBackground(Color.pink);
         mainContainer.add(jPanel);
 
 
     }
+
+    /**
+     * 注册监听事件
+     */
+    private void addListener() {
+        b1.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //打开AddStuFrame窗体
+                new AddStuFrame(teacher.getUserNo()).addListener(new AddStuFrame.Callback() {
+                    @Override
+                    public void done(AddStuFrame addStuFrame) {
+                        //刷新学生名单列表
+                        classes = Controller.getClasses(teacher.getUserNo());
+                        showClasses();
+                        addStuFrame.dispose();
+                    }
+
+                    @Override
+                    public void cancel(AddStuFrame addStuFrame) {
+                        addStuFrame.dispose();
+                    }
+
+                });
+            }
+        });
+    }
+
 
     /**
      * 展示登录人员信息

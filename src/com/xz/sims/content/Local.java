@@ -7,6 +7,8 @@ package com.xz.sims.content;
 public class Local {
     //用户存储位置
     public static final String USER_DIR = "data/user";
-
+    //学生存储位置
+    public static final String STU_DIR = "data/stu";
+    //班级名单存储位置
     public static final String CLASS_STU = "data/class";
 }

@@ -33,6 +33,10 @@ public class Controller {
         if (!file.exists()) {
             file.mkdirs();
         }
+        file = new File(Local.STU_DIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     /**
@@ -49,45 +53,22 @@ public class Controller {
             //人员不存在
             return null;
         }
-        StringBuffer sb;
-        Reader reader = null;
-        try {
-
-            //尝试读取人员数据
-            //如果提供的账号不存在表示人员也不存在的
-            //存在的话就开始判断密码是否正确
-            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-            int ch = 0;
-            sb = new StringBuffer();
-            while ((ch = reader.read()) != -1) {
-                sb.append((char) ch);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String data = readData(file);
+        if (data == null) {
             return null;
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
         //--开始判断密码是否正确--
 
         //1.把json数据转成实体类
         Teacher tt = null;
         try {
-            tt = gson.fromJson(sb.toString(), Teacher.class);
+            tt = gson.fromJson(data, Teacher.class);
         } catch (Exception e) {
             e.printStackTrace();
             //json文件已损坏
             System.out.println("======用户数据损坏=====");
             return null;
         }
-
         //2.判断用户输入的密码是否正确
         if (tt.getUserPwd().equals(pwd)) {
             //密码正确
@@ -109,16 +90,12 @@ public class Controller {
      * 2 文件写入失败
      */
     public static int tRegister(Teacher teacher) {
-
         File file = new File(Local.USER_DIR + File.separator + teacher.getUserNo());
         if (file.exists()) {
             //人员存在
             return 1;
         }
-
         String userData = gson.toJson(teacher);
-
-
         boolean isOk = writerData(file, userData);
         if (!isOk) {
             return 2;
@@ -139,33 +116,14 @@ public class Controller {
             return null;
         }
 
-        StringBuffer sb;
-        Reader reader = null;
-        try {
-
-            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-            int ch = 0;
-            sb = new StringBuffer();
-            while ((ch = reader.read()) != -1) {
-                sb.append((char) ch);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String data = readData(file);
+        if (data == null) {
             return null;
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
 
         Classes cc = null;
         try {
-            cc = gson.fromJson(sb.toString(), Classes.class);
+            cc = gson.fromJson(data, Classes.class);
         } catch (Exception e) {
             e.printStackTrace();
             //json文件已损坏
@@ -210,6 +168,36 @@ public class Controller {
 
 
     /**
+     * 查找学生
+     *
+     * @param userNo 学号
+     * @return 如果存在返回实体 否则返回null
+     */
+    public static Student findStu(String userNo) {
+        File file = new File(Local.STU_DIR + File.separator + userNo);
+        if (!file.exists()) {
+            //学生不存在
+            return null;
+        }
+        String data = readData(file);
+
+        if (data == null) {
+            return null;
+        }
+        Student cc = null;
+        try {
+            cc = gson.fromJson(data, Student.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //json文件已损坏
+            return null;
+        }
+        return cc;
+
+    }
+
+
+    /**
      * 写数据工具
      * 替换式修改，不追加
      *
@@ -238,5 +226,41 @@ public class Controller {
         }
         return true;
     }
+
+
+    /**
+     * 读取数据工具
+     *
+     * @param file
+     * @return
+     */
+    private static String readData(File file) {
+        StringBuffer sb;
+        Reader reader = null;
+        try {
+
+            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+            int ch = 0;
+            sb = new StringBuffer();
+            while ((ch = reader.read()) != -1) {
+                sb.append((char) ch);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sb.toString();
+
+    }
+
 
 }
