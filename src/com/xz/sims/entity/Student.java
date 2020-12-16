@@ -19,7 +19,16 @@ public class Student {
     private String teacherName;
     //班主任工号
     private String teacherNo;
+    //班级名
+    private String className;
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     public String getUserPwd() {
         return userPwd;

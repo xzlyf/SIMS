@@ -38,6 +38,7 @@ public class TeacherManagerFrame extends JFrame {
     private JButton b1 = new JButton("添加学生");
     private JButton b2 = new JButton("生成随机课表（测试）");
     private JButton b3 = new JButton("保存课表");
+    private JButton b4 = new JButton("退出登录");
 
     /**
      * 初始化 并传入登录人员信息
@@ -45,7 +46,7 @@ public class TeacherManagerFrame extends JFrame {
      * @param teacher
      */
     public void init(Teacher teacher) {
-        setTitle("SIMS校园管理系统");
+        setTitle("SIMS校园管理系统(教师端)");
         this.teacher = teacher;
         if (teacher.getUserNo() != null) {
             this.classes = Controller.getClasses(teacher.getUserNo());
@@ -103,11 +104,7 @@ public class TeacherManagerFrame extends JFrame {
         jPanel.add(b1);
         jPanel.add(b2);
         jPanel.add(b3);
-        jPanel.add(new JButton("测试4"));
-        jPanel.add(new JButton("测试5"));
-        jPanel.add(new JButton("测试6"));
-        jPanel.add(new JButton("测试7"));
-        jPanel.add(new JButton("测试8"));
+        jPanel.add(b4);
         jPanel.setBounds(160, 10, 400, 90);
         jPanel.setBackground(Color.pink);
         mainContainer.add(jPanel);
@@ -162,7 +159,15 @@ public class TeacherManagerFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Controller.saveTimetable(teacher.getUserNo(), (DefaultTableModel) table.getModel());
-                JOptionPane.showMessageDialog(mainContainer,"已保存当前课表");
+                JOptionPane.showMessageDialog(mainContainer, "已保存当前课表");
+            }
+        });
+        //退出登录
+        b4.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LoginFrame().init();
+                dispose();
             }
         });
     }

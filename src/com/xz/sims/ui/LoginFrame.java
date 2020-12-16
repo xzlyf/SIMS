@@ -135,40 +135,16 @@ public class LoginFrame extends JFrame {
                 System.out.println("输入：" + userPwd);
 
                 if (type == 0) {
-                    //System.out.println("----学生登录-----");
-                    //教师注册
-                    //Teacher teacher = new Teacher();
-                    //teacher.setAge(18);
-                    //teacher.setClassName("一年级一班");
-                    //teacher.setName("李明");
-                    //teacher.setPhone("17666666666");
-                    //teacher.setUserNo(AccountGenerate.makeAccount(8));//随机生成账号8位
-                    //teacher.setUserPwd("123456");//随机生成账号8位
-                    //int i = Controller.tRegister(teacher);
-                    //System.out.println(i);
-
-                    //学生注册
-                    //Student student = new Student();
-                    //student.setUserNo(AccountGenerate.makeAccount(8));
-                    //student.setUserPwd("123");
-                    //student.setTeacherNo("123");
-                    //student.setTeacherName("李明");
-                    //student.setPhone("10086");
-                    //student.setName("咳咳");
-                    //student.setAge("12");
-                    //Controller.sRegister(student);
-
-
-                    //添加至班级名单
-                    //Student student = new Student();
-                    //student.setAge("12");
-                    //student.setName("小苗");
-                    //student.setPhone("12345678");
-                    //student.setTeacherName("李明");
-                    //student.setTeacherNo("123");
-                    //student.setUserNo("54123874");
-                    //Controller.addStuToClasses("123", student);
-
+                    System.out.println("----学生登录-----");
+                    Student student = Controller.slogin(userNo, userPwd);
+                    if (student == null) {
+                        JOptionPane.showMessageDialog(null, "人员不存在或密码错误"
+                                , "警告", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        System.out.println("学号：" + student.getUserNo() + "   登录成功");
+                        new StudentManagerFrame().init(student);
+                        dispose();
+                    }
                 } else if (type == 1) {
                     System.out.println("----教师登录-----");
                     Teacher teacher = Controller.tlogin(userNo, userPwd);
@@ -176,7 +152,7 @@ public class LoginFrame extends JFrame {
                         JOptionPane.showMessageDialog(null, "人员不存在或密码错误"
                                 , "警告", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        System.out.println("学工号：" + teacher.getUserNo() + "   登录成功");
+                        System.out.println("工号：" + teacher.getUserNo() + "   登录成功");
                         new TeacherManagerFrame().init(teacher);
                         dispose();
                     }
