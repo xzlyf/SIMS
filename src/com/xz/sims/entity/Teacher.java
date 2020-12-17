@@ -12,7 +12,7 @@ public class Teacher {
     //姓名
     private String name;
     //年龄
-    private int age;
+    private String age;
     //电话
     private String phone;
     //管理班级
@@ -42,11 +42,11 @@ public class Teacher {
         this.name = name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
