@@ -167,7 +167,7 @@ public class LoginFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                new RegisterFrame().init();
+                new RegisterFrameV2();
             }
         });
 

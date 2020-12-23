@@ -9,6 +9,7 @@ import com.xz.sims.entity.Timetable;
 
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.*;
@@ -521,7 +522,7 @@ public class Controller {
         FileWriter writer = null;
 
         try {
-            writer = new FileWriter(file);
+            writer = new FileWriter(file, StandardCharsets.UTF_8);
             writer.write(data);
             writer.flush();
         } catch (Exception e) {

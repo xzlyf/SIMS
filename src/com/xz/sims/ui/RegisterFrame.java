@@ -124,7 +124,7 @@ public class RegisterFrame extends JFrame {
                     return;
                 }
                 System.out.println("输入：" + userPwd);
-                String userNo = AccountGenerate.makeAccount(8);
+                String userNo = AccountGenerate.makeAccount(6);
 
                 if (type == 0) {
                     //学生注册
@@ -156,7 +156,8 @@ public class RegisterFrame extends JFrame {
                     Controller.tRegister(teacher);
                 }
 
-                JOptionPane.showMessageDialog(mainContainer, "账号：" + userNo + "密码：" + userPwd.getText().trim() + "\n请记住账号和密码");
+                JOptionPane.showMessageDialog(null, "账号：" + userNo + "密码：" + userPwd.getText().trim() + "\n请记住账号和密码");
+                dispose();
             }
         });
 
