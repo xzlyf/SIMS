@@ -223,6 +223,10 @@ public class Controller {
         }
         //1.讲学生添加进班级
         addStuToClasses(teacherNo, stu);
+        //2.更新学生信息
+        stu.setTeacherName(teacher.getName());
+        stu.setTeacherNo(teacher.getUserNo());
+        updateStudent(stu.getUserNo(), stu);
         return teacher;
     }
 
@@ -333,6 +337,44 @@ public class Controller {
             list.add(gson.fromJson(data, Teacher.class));
         }
         return list;
+    }
+
+    /**
+     * 获取一个班级人数
+     *
+     * @param userNo 教工号
+     * @return
+     */
+    public static int getClassCount(String userNo) {
+        Classes classes = getClasses(userNo);
+        if (classes != null) {
+            return classes.getStudentList().size();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 修改学生信息
+     *
+     * @param userNo 学号
+     * @param newStu 新的信息
+     * @return -1 人员不存在
+     * 2 写入失败
+     * 0 更新成功
+     */
+    public static int updateStudent(String userNo, Student newStu) {
+        File file = new File(Local.STU_DIR + File.separator + userNo);
+        if (!file.exists()) {
+            //人员不存在
+            return -1;
+        }
+        String userData = gson.toJson(newStu);
+        boolean isOk = writerData(file, userData);
+        if (!isOk) {
+            return 2;
+        }
+        return 0;
     }
 
     /**

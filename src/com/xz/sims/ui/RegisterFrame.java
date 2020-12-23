@@ -47,7 +47,7 @@ public class RegisterFrame extends JFrame {
         addListener();
 
         //居中
-        //setLocationRelativeTo(null);
+        //·
         //自动退出销毁
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
