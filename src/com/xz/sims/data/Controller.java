@@ -209,6 +209,22 @@ public class Controller {
 
     }
 
+    /**
+     * 学生绑定导师
+     *
+     * @param stu       学生信息
+     * @param teacherNo 教工号
+     * @return 教师信息
+     */
+    public static Teacher bindTeacher(Student stu, String teacherNo) {
+        Teacher teacher = findTeach(teacherNo);
+        if (teacher == null) {
+            return null;
+        }
+        //1.讲学生添加进班级
+        addStuToClasses(teacherNo, stu);
+        return teacher;
+    }
 
     /**
      * 添加学生进班级列表
@@ -269,6 +285,54 @@ public class Controller {
         }
         return cc;
 
+    }
+
+    /**
+     * 查找学生
+     *
+     * @param userNo
+     * @return
+     */
+    public static Teacher findTeach(String userNo) {
+        File file = new File(Local.USER_DIR + File.separator + userNo);
+        if (!file.exists()) {
+            //教师不存在
+            return null;
+        }
+        String data = readData(file);
+
+        if (data == null) {
+            return null;
+        }
+        Teacher tt = null;
+        try {
+            tt = gson.fromJson(data, Teacher.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //json文件已损坏
+            return null;
+        }
+        return tt;
+    }
+
+    /**
+     * 返回所有教师数据
+     *
+     * @return
+     */
+    public static List<Teacher> findAllTeach() {
+        File[] file = new File(Local.USER_DIR).listFiles();
+        if (file == null || file.length < 1) {
+            return null;
+        }
+
+        String data;
+        List<Teacher> list = new ArrayList<>();
+        for (File f : file) {
+            data = readData(f);
+            list.add(gson.fromJson(data, Teacher.class));
+        }
+        return list;
     }
 
     /**

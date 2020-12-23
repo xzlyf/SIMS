@@ -49,7 +49,7 @@ public class RegisterFrame extends JFrame {
         //居中
         //setLocationRelativeTo(null);
         //自动退出销毁
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         pack();
     }
@@ -183,7 +183,7 @@ public class RegisterFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                RegisterFrame.this.dispose();
+                dispose();
             }
         });
     }

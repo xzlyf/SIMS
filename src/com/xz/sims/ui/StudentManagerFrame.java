@@ -21,6 +21,7 @@ public class StudentManagerFrame extends JFrame {
     private Container mainContainer = getContentPane();
 
     private JButton b1 = new JButton("退出登录");
+    private JButton b2 = new JButton("绑定班级");
 
 
     //多行文本域
@@ -67,6 +68,7 @@ public class StudentManagerFrame extends JFrame {
         jPanel.setBounds(160, 10, 400, 100);
         jPanel.setBackground(Color.LIGHT_GRAY);
         jPanel.add(b1);
+        jPanel.add(b2);
         mainContainer.add(jPanel);
 
     }
@@ -80,6 +82,12 @@ public class StudentManagerFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new LoginFrame().init();
                 dispose();
+            }
+        });
+        b2.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddTeachFrame(student);
             }
         });
     }
