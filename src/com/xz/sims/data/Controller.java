@@ -226,6 +226,7 @@ public class Controller {
         //2.更新学生信息
         stu.setTeacherName(teacher.getName());
         stu.setTeacherNo(teacher.getUserNo());
+        stu.setClassName(teacher.getClassName());
         updateStudent(stu.getUserNo(), stu);
         return teacher;
     }
